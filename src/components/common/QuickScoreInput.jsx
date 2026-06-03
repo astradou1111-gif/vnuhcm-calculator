@@ -4,22 +4,27 @@ const toneClass = {
   blue: {
     ring: 'focus:ring-blue-500',
     active: 'text-blue-800',
+    panel: 'border-blue-100 bg-gradient-to-br from-blue-50 to-white',
   },
   hcmut: {
     ring: 'focus:ring-blue-800',
     active: 'text-blue-800',
+    panel: 'border-blue-100 bg-gradient-to-br from-blue-50 to-white',
   },
   emerald: {
     ring: 'focus:ring-emerald-600',
     active: 'text-emerald-800',
+    panel: 'border-emerald-100 bg-gradient-to-br from-emerald-50 to-white',
   },
   indigo: {
     ring: 'focus:ring-indigo-600',
     active: 'text-indigo-800',
+    panel: 'border-indigo-100 bg-gradient-to-br from-indigo-50 to-white',
   },
   red: {
     ring: 'focus:ring-red-500',
     active: 'text-red-800',
+    panel: 'border-rose-100 bg-gradient-to-br from-rose-50 to-white',
   },
 };
 
@@ -56,13 +61,13 @@ export const QuickScoreInput = ({
   };
 
   return (
-    <div className={`rounded-xl border border-slate-200 bg-slate-50 p-4 ${className}`}>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className={`rounded-[1.5rem] border p-4 shadow-sm ${toneStyle.panel} ${className}`}>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <label htmlFor={inputId} className="mb-1 block text-sm font-semibold text-slate-700">
+          <label htmlFor={inputId} className="mb-1 block text-sm font-bold text-slate-800">
             {title}
           </label>
-          <p id={descriptionId} className="text-xs text-slate-500">{description}</p>
+          <p id={descriptionId} className="text-xs leading-6 text-slate-500">{description}</p>
         </div>
         <input
           id={inputId}
@@ -74,10 +79,10 @@ export const QuickScoreInput = ({
           onChange={handleChange}
           disabled={disabled}
           aria-describedby={description ? descriptionId : undefined}
-          className={`w-full rounded-md border px-3 py-2 text-right text-lg font-bold focus:outline-none focus:ring-2 sm:w-40 ${toneStyle.ring} ${
+          className={`w-full rounded-2xl border px-4 py-3 text-right text-xl font-black tracking-tight shadow-sm focus:outline-none focus:ring-2 sm:w-44 ${toneStyle.ring} ${
             disabled
               ? 'cursor-not-allowed border-slate-200 bg-slate-100 text-slate-500'
-              : `border-slate-200 bg-white ${toneStyle.active}`
+              : `border-white bg-white ${toneStyle.active}`
           }`}
           placeholder={placeholder}
         />

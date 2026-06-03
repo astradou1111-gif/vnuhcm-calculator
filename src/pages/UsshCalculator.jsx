@@ -3,7 +3,10 @@ import { useUsshCalculator } from '../hooks/useUsshCalculator';
 import { CardSection } from '../components/common/CardSection';
 import { QuickScoreInput } from '../components/common/QuickScoreInput';
 import { SavedScoresBanner } from '../components/common/SavedScoresBanner';
-import { Settings, BookOpen, PenTool, Award, Info, Calculator, X, Globe, ExternalLink } from 'lucide-react';
+import { CalculatorHero } from '../components/common/CalculatorHero';
+import { ResultShell } from '../components/common/ResultShell';
+import { FloatingResultBar } from '../components/common/FloatingResultBar';
+import { Settings, BookOpen, PenTool, Award, Info, X, Globe } from 'lucide-react';
 import { KHU_VUC, DOI_TUONG } from '../constants/common';
 
 const clampScore = (value, max) => {
@@ -38,23 +41,16 @@ export const UsshCalculator = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto animate-in fade-in duration-500 pb-28">
-      <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-emerald-900 tracking-tight flex items-center gap-3">
-          <Globe className="w-8 h-8 text-emerald-700" />
-          Máy tính điểm USSH 2026
-        </h1>
-        <p className="text-slate-500 mt-2">Phương thức tổng hợp của Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQG-HCM.</p>
-        <a
-          href="https://hcmussh.edu.vn/tin-tuc/thong-tin-tuyen-sinh-dai-hoc-chinh-quy"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800 transition-colors hover:border-emerald-200 hover:bg-emerald-100"
-        >
-          Xem phương thức tuyển sinh USSH
-          <ExternalLink className="h-4 w-4" />
-        </a>
-      </div>
+    <div className="w-full animate-in fade-in duration-500 pb-28">
+      <div className="space-y-8">
+      <CalculatorHero
+        title="Máy tính điểm USSH 2026"
+        description="Phương thức tổng hợp của Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQG-HCM với khu vực kết quả phân biệt rõ từng kịch bản xét tuyển."
+        icon={Globe}
+        tone="emerald"
+        ctaLabel="Xem phương thức tuyển sinh USSH"
+        ctaHref="https://hcmussh.edu.vn/tin-tuc/thong-tin-tuyen-sinh-dai-hoc-chinh-quy"
+      />
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
@@ -243,34 +239,13 @@ export const UsshCalculator = () => {
         </div>
 
         {/* Right Column - Result */}
-        <div className={`
-          lg:block lg:w-96 lg:static
-          ${showMobileResultModal ? 'fixed inset-0 z-[60] bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in' : 'hidden'}
-        `}>
-          <div className={`
-            w-full bg-white shadow-2xl relative flex flex-col overflow-hidden
-            ${showMobileResultModal ? 'rounded-t-3xl sm:rounded-2xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-full sm:zoom-in-95' : 'rounded-2xl border border-emerald-200 sticky top-24'}
-          `}>
-            
-            {showMobileResultModal && (
-              <button onClick={() => setShowMobileResultModal(false)} className="absolute top-4 right-4 z-20 text-white/70 hover:text-white lg:hidden bg-black/20 rounded-full p-1.5">
-                <X className="w-5 h-5" />
-              </button>
-            )}
-
-            {/* Header */}
-            <div className="p-6 bg-gradient-to-br from-emerald-700 to-emerald-900 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Calculator className="w-24 h-24" />
-              </div>
-              <h2 className="mb-1 text-lg font-medium text-emerald-100">Điểm xét tuyển</h2>
-              <div className="text-5xl font-extrabold tracking-tight mb-2">
-                {results.total.toFixed(2)} <span className="text-xl font-normal text-emerald-200">/ 100</span>
-              </div>
-            </div>
-
-            {/* Breakdown */}
-            <div className="p-6 space-y-6">
+        <ResultShell
+          tone="emerald"
+          showMobile={showMobileResultModal}
+          onClose={() => setShowMobileResultModal(false)}
+          score={results.total.toFixed(2)}
+        >
+            <div className="space-y-6">
                <div>
                   <div className="space-y-3">
                     <div className={`p-3 rounded-xl border ${results.selectedScenario === 'all' ? 'bg-emerald-50 border-emerald-300 ring-1 ring-emerald-300' : 'bg-slate-50 border-slate-100 opacity-60'}`}>
@@ -342,24 +317,14 @@ export const UsshCalculator = () => {
                   </div>
                </div>
             </div>
-          </div>
-        </div>
+        </ResultShell>
       </div>
 
-      {/* Floating Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 pb-safe shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] z-40 lg:hidden flex justify-between items-center animate-in slide-in-from-bottom-full">
-        <div>
-          <div className="text-xs text-slate-500 font-medium mb-0.5">Tổng điểm xét tuyển</div>
-          <div className="text-2xl font-extrabold text-emerald-700 leading-none">
-            {results.total.toFixed(2)} <span className="text-sm font-normal text-slate-500">/ 100</span>
-          </div>
-        </div>
-        <button 
-          onClick={() => setShowMobileResultModal(true)}
-          className="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-semibold transition-colors shadow-md flex items-center gap-2"
-        >
-          Xem chi tiết
-        </button>
+      <FloatingResultBar
+        tone="emerald"
+        value={`${results.total.toFixed(2)} / 100`}
+        onOpen={() => setShowMobileResultModal(true)}
+      />
       </div>
 
     </div>

@@ -3,7 +3,10 @@ import { useHcmusCalculator } from '../hooks/useHcmusCalculator';
 import { CardSection } from '../components/common/CardSection';
 import { QuickScoreInput } from '../components/common/QuickScoreInput';
 import { SavedScoresBanner } from '../components/common/SavedScoresBanner';
-import { Settings, BookOpen, PenTool, Award, Info, Calculator, AlertTriangle, CheckCircle2, X, GraduationCap, ExternalLink } from 'lucide-react';
+import { CalculatorHero } from '../components/common/CalculatorHero';
+import { ResultShell } from '../components/common/ResultShell';
+import { FloatingResultBar } from '../components/common/FloatingResultBar';
+import { Settings, BookOpen, PenTool, Award, Info, AlertTriangle, CheckCircle2, X, GraduationCap } from 'lucide-react';
 import { NGOAI_NGU_CONVERSION } from '../constants/hcmus';
 import { KHU_VUC, DOI_TUONG } from '../constants/common';
 
@@ -58,23 +61,16 @@ export const HcmusCalculator = () => {
   const hasThptDetail = state.thpt.some(val => val !== '') || (state.isNgoaiNgu && state.diemChungChi !== '');
   const hasThptQuickTotal = state.thptQuickTotal !== '';
   return (
-    <div className="max-w-7xl mx-auto animate-in fade-in duration-500 pb-28">
-      <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-blue-900 tracking-tight flex items-center gap-3">
-          <GraduationCap className="w-8 h-8 text-blue-700" />
-          Máy tính điểm HCMUS 2026
-        </h1>
-        <p className="text-slate-500 mt-2">Phương thức tổng hợp của Trường Đại học Khoa học Tự nhiên - ĐHQG-HCM.</p>
-        <a
-          href="https://tuyensinh.hcmus.edu.vn/2026-thong-tin-tuyen-sinh/"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-800 transition-colors hover:border-blue-200 hover:bg-blue-100"
-        >
-          Xem phương thức tuyển sinh HCMUS
-          <ExternalLink className="h-4 w-4" />
-        </a>
-      </div>
+    <div className="w-full animate-in fade-in duration-500 pb-28">
+      <div className="space-y-8">
+      <CalculatorHero
+        title="Máy tính điểm HCMUS 2026"
+        description="Phương thức tổng hợp của Trường Đại học Khoa học Tự nhiên - ĐHQG-HCM với giao diện nhập liệu trực quan và khu vực kết quả nổi bật."
+        icon={GraduationCap}
+        tone="blue"
+        ctaLabel="Xem phương thức tuyển sinh HCMUS"
+        ctaHref="https://tuyensinh.hcmus.edu.vn/2026-thong-tin-tuyen-sinh/"
+      />
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
@@ -425,53 +421,21 @@ export const HcmusCalculator = () => {
 
         </div>
 
-        {/* Right Column - Sticky Result */}
-        <div className={`
-          lg:block lg:w-96 lg:static
-          ${showMobileResultModal ? 'fixed inset-0 z-[60] bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in' : 'hidden'}
-        `}>
-          <div className={`
-            w-full bg-white shadow-2xl relative flex flex-col overflow-hidden
-            ${showMobileResultModal ? 'rounded-t-3xl sm:rounded-2xl max-h-[90vh] animate-in slide-in-from-bottom-full sm:zoom-in-95' : 'rounded-2xl border border-blue-100 sticky top-24'}
-          `}>
-            
-            {/* Close button for mobile */}
-            {showMobileResultModal && (
-              <button 
-                onClick={() => setShowMobileResultModal(false)}
-                className="absolute top-4 right-4 z-20 text-white/70 hover:text-white lg:hidden bg-black/20 rounded-full p-1.5 backdrop-blur-sm transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-
-            {/* Overlay Cảnh Báo Nếu Hồ Sơ Không Hợp Lệ */}
+        <ResultShell
+          tone="blue"
+          showMobile={showMobileResultModal}
+          onClose={() => setShowMobileResultModal(false)}
+          score={results.base100.toFixed(2)}
+          subtitle={`Thang 30: ${results.base30.toFixed(2)}`}
+        >
+            <div className="space-y-6">
               {results.hocBaStatus === 3 && (
-                <div className="absolute inset-0 bg-red-900/10 backdrop-blur-[2px] z-10 flex items-center justify-center p-6">
-                  <div className="bg-white p-5 rounded-xl shadow-2xl text-center border-2 border-red-500">
-                    <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-3" />
-                    <h3 className="text-lg font-bold text-red-700 mb-1">Hồ Sơ Không Hợp Lệ</h3>
-                    <p className="text-sm text-slate-600">Khuyết điểm học bạ lớp 11 hoặc 12.</p>
-                  </div>
+                <div className="rounded-[1.5rem] border-2 border-red-300 bg-red-50 p-5 text-center">
+                  <AlertTriangle className="mx-auto mb-3 h-10 w-10 text-red-500" />
+                  <h3 className="text-lg font-black text-red-700">Hồ Sơ Không Hợp Lệ</h3>
+                  <p className="mt-1 text-sm text-slate-600">Khuyết điểm học bạ lớp 11 hoặc 12.</p>
                 </div>
               )}
-
-              {/* Header */}
-              <div className={`p-6 text-white relative overflow-hidden transition-colors ${results.hocBaStatus === 3 ? 'bg-slate-500' : 'bg-gradient-to-br from-blue-700 to-blue-900'}`}>
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Calculator className="w-24 h-24" />
-                </div>
-                <h2 className="mb-1 text-lg font-medium text-blue-100">Điểm xét tuyển</h2>
-                <div className="text-5xl font-extrabold tracking-tight mb-2">
-                  {results.base100.toFixed(2)} <span className="text-xl font-normal text-blue-200">/ 100</span>
-                </div>
-                <div className="text-lg font-medium text-blue-100">
-                  Thang 30: <span className="font-bold text-white">{results.base30.toFixed(2)}</span>
-                </div>
-              </div>
-
-              {/* Breakdown */}
-            <div className="p-6 space-y-6">
                 
                 {/* Branch Selection */}
                 <div>
@@ -568,24 +532,15 @@ export const HcmusCalculator = () => {
                 </div>
 
               </div>
-            </div>
-        </div>
+        </ResultShell>
       </div>
 
-      {/* Floating Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 pb-safe shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] z-40 lg:hidden flex justify-between items-center animate-in slide-in-from-bottom-full">
-        <div>
-          <div className="text-xs text-slate-500 font-medium mb-0.5">Điểm xét tuyển</div>
-          <div className="text-2xl font-extrabold text-blue-700 leading-none">
-            {results.base100.toFixed(2)} <span className="text-sm font-normal text-slate-500">/ 100</span>
-          </div>
-        </div>
-        <button 
-          onClick={() => setShowMobileResultModal(true)}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors shadow-md flex items-center gap-2"
-        >
-          Xem chi tiết
-        </button>
+      <FloatingResultBar
+        tone="blue"
+        label="Điểm xét tuyển"
+        value={`${results.base100.toFixed(2)} / 100`}
+        onOpen={() => setShowMobileResultModal(true)}
+      />
       </div>
 
       {/* Modal Bảng Quy Đổi Ngoại Ngữ */}

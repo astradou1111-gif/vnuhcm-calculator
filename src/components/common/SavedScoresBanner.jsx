@@ -37,23 +37,23 @@ export const SavedScoresBanner = ({
   return (
     <section
       aria-live="polite"
-      className={`mb-8 rounded-2xl border p-4 shadow-sm backdrop-blur ${styles.panel}`}
+      className={`rounded-[1.75rem] border p-4 shadow-[0_20px_60px_-36px_rgba(15,23,42,0.38)] backdrop-blur sm:p-5 ${styles.panel}`}
     >
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-start gap-3">
-          <div className={`rounded-xl p-2 shadow-sm ${styles.icon}`}>
+          <div className={`rounded-2xl p-2.5 shadow-sm ${styles.icon}`}>
             <Database className="h-5 w-5" />
           </div>
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-sm font-semibold sm:text-base">
+              <h2 className="text-sm font-black tracking-tight sm:text-base">
                 Tự động lưu điểm trên trình duyệt
               </h2>
               <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${styles.badge}`}>
                 {hasSavedData ? 'Đang hoạt động' : 'Sẵn sàng'}
               </span>
             </div>
-            <p className="text-sm leading-6 text-slate-700">
+            <p className="text-sm leading-7 text-slate-700">
               Điểm đã nhập được lưu cục bộ bằng `localStorage` trên trình duyệt này.
               {hasSavedData
                 ? ' Khi mở lại trang, dữ liệu sẽ được phục hồi tự động.'
@@ -66,7 +66,7 @@ export const SavedScoresBanner = ({
           type="button"
           onClick={onClear}
           disabled={!hasSavedData}
-          className={`inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${styles.button}`}
+          className={`inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${styles.button}`}
         >
           <RotateCcw className="h-4 w-4" />
           Xóa dữ liệu đã lưu

@@ -2,9 +2,7 @@ import { useState } from 'react';
 import {
   AlertTriangle,
   Award,
-  Calculator,
   CheckCircle2,
-  ExternalLink,
   GraduationCap,
   Info,
   PenTool,
@@ -15,6 +13,9 @@ import {
 import { CardSection } from '../components/common/CardSection';
 import { QuickScoreInput } from '../components/common/QuickScoreInput';
 import { SavedScoresBanner } from '../components/common/SavedScoresBanner';
+import { CalculatorHero } from '../components/common/CalculatorHero';
+import { ResultShell } from '../components/common/ResultShell';
+import { FloatingResultBar } from '../components/common/FloatingResultBar';
 import { KHU_VUC, DOI_TUONG } from '../constants/common';
 import { IU_ENGLISH_TYPES, IU_GROUPS } from '../constants/iu';
 import { useIuCalculator } from '../hooks/useIuCalculator';
@@ -72,20 +73,14 @@ export const IuCalculator = () => {
   };
 
   const resultCard = (
-    <div className="w-full bg-white rounded-2xl border border-red-100 shadow-2xl overflow-hidden sticky top-24">
-      <div className="relative overflow-hidden bg-gradient-to-br from-red-700 to-slate-900 p-6 text-white">
-        <div className="absolute right-0 top-0 p-4 opacity-10">
-          <Calculator className="h-24 w-24" />
-        </div>
-        <h2 className="mb-1 text-lg font-medium text-red-100">Điểm xét tuyển</h2>
-        <div className="mb-2 text-5xl font-extrabold tracking-tight">
-          {results.total.toFixed(2)}
-          <span className="text-xl font-normal text-red-100"> / 100</span>
-        </div>
-        <p className="mt-2 text-sm text-red-100">Thang chuẩn 100 điểm</p>
-      </div>
-
-      <div className="space-y-5 p-6">
+    <ResultShell
+      tone="red"
+      showMobile={showMobileResultModal}
+      onClose={() => setShowMobileResultModal(false)}
+      score={results.total.toFixed(2)}
+      subtitle="Thang chuẩn 100 điểm"
+    >
+      <div className="space-y-5">
         <div>
           <div className="mb-3 rounded-xl bg-red-50 p-3 text-sm text-red-900">
             <div className="font-semibold">
@@ -148,29 +143,20 @@ export const IuCalculator = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ResultShell>
   );
 
   return (
-    <div className="mx-auto max-w-7xl animate-in fade-in pb-28 duration-500">
-      <div className="mb-8">
-        <h1 className="flex items-center gap-3 text-3xl font-extrabold tracking-tight text-red-900">
-          <GraduationCap className="h-8 w-8 text-red-700" />
-          Máy tính điểm IU 2026
-        </h1>
-        <p className="mt-2 text-slate-500">
-          Phương thức tổng hợp của Trường Đại học Quốc tế - ĐHQG-HCM.
-        </p>
-        <a
-          href="https://tuyensinh.hcmiu.edu.vn/tuyen-sinh/thong-tin-tuyen-sinh-dai-hoc-nam-2026-du-kien/"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm font-medium text-red-800 transition-colors hover:border-red-200 hover:bg-red-100"
-        >
-          Xem phương thức tuyển sinh IU
-          <ExternalLink className="h-4 w-4" />
-        </a>
-      </div>
+    <div className="w-full animate-in fade-in pb-28 duration-500">
+      <div className="space-y-8">
+      <CalculatorHero
+        title="Máy tính điểm IU 2026"
+        description="Phương thức tổng hợp của Trường Đại học Quốc tế - ĐHQG-HCM với các nhóm đối tượng, trọng số và điểm cộng được trình bày rõ ràng hơn."
+        icon={GraduationCap}
+        tone="red"
+        ctaLabel="Xem phương thức tuyển sinh IU"
+        ctaHref="https://tuyensinh.hcmiu.edu.vn/tuyen-sinh/thong-tin-tuyen-sinh-dai-hoc-nam-2026-du-kien/"
+      />
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
@@ -566,42 +552,16 @@ export const IuCalculator = () => {
           </CardSection>
         </div>
 
-        <div className="hidden lg:block lg:w-96">{resultCard}</div>
+        {resultCard}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-between border-t border-slate-200 bg-white p-4 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] lg:hidden">
-        <div>
-          <div className="mb-0.5 text-xs font-medium text-slate-500">Điểm xét tuyển</div>
-          <div className="text-2xl font-extrabold leading-none text-red-700">
-            {results.total.toFixed(2)}
-            <span className="text-sm font-normal text-slate-500"> / 100</span>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={() => setShowMobileResultModal(true)}
-          className="flex items-center gap-2 rounded-xl bg-red-700 px-6 py-3 font-semibold text-white shadow-md transition-colors hover:bg-red-800"
-        >
-          Xem chi tiết
-        </button>
+      <FloatingResultBar
+        tone="red"
+        label="Điểm xét tuyển"
+        value={`${results.total.toFixed(2)} / 100`}
+        onOpen={() => setShowMobileResultModal(true)}
+      />
       </div>
-
-      {showMobileResultModal && (
-        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-slate-900/50 p-0 backdrop-blur-sm animate-in fade-in sm:items-center sm:p-4 lg:hidden">
-          <div className="relative max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-white sm:max-w-md sm:rounded-2xl">
-            <button
-              type="button"
-              onClick={() => setShowMobileResultModal(false)}
-              className="absolute right-4 top-4 z-20 rounded-full bg-black/20 p-1.5 text-white/70 backdrop-blur-sm transition-colors hover:text-white"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <div className="[&>div]:static [&>div]:rounded-none [&>div]:border-0 [&>div]:shadow-none">
-              {resultCard}
-            </div>
-          </div>
-        </div>
-      )}
 
       {showEnglishConversionTable && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in">

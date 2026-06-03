@@ -12,34 +12,44 @@ const ThreadsIcon = (props) => (
 
 export const Footer = () => {
   return (
-    <footer className="bg-white border-t border-slate-200 mt-auto">
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-sm font-medium text-slate-600">
-          &copy; Web Tính Điểm ĐHQG-HCM 2026
-        </p>
-        <p className="mt-1 text-center text-sm text-slate-500">
-          Công cụ tham khảo, không phải thông tin chính thức từ ĐHQG-HCM.
-        </p>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm">
-          <a
-            href="https://github.com/trhming/vnuhcm-calculator"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 font-medium text-slate-600 transition-colors hover:text-sky-700 hover:underline"
-          >
-            <GithubIcon className="h-4 w-4" />
-            GitHub
-          </a>
-          <span className="text-slate-300">|</span>
-          <a
-            href="https://www.threads.com/@trhming_"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 font-medium text-slate-600 transition-colors hover:text-sky-700 hover:underline"
-          >
-            <ThreadsIcon className="h-4 w-4" />
-            Threads
-          </a>
+    <footer className="mt-auto border-t border-white/60 bg-white/70 backdrop-blur-xl">
+      <div className="app-container py-10">
+        <div className="surface-card px-6 py-6 sm:px-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                VNUHCM Calculator
+              </p>
+              <p className="mt-2 text-lg font-black text-slate-950">
+                Web Tính Điểm ĐHQG-HCM 2026
+              </p>
+              <p className="mt-2 text-sm leading-7 text-slate-600">
+                Công cụ tham khảo giúp so sánh nhanh nhiều phương thức tuyển sinh.
+                Kết quả không thay thế thông báo chính thức từ các trường thành viên.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 text-sm">
+              <a
+                href="https://github.com/trhming/vnuhcm-calculator"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 transition hover:border-slate-300 hover:text-sky-700"
+              >
+                <GithubIcon className="h-4 w-4" />
+                GitHub
+              </a>
+              <a
+                href="https://www.threads.com/@trhming_"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 transition hover:border-slate-300 hover:text-sky-700"
+              >
+                <ThreadsIcon className="h-4 w-4" />
+                Threads
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

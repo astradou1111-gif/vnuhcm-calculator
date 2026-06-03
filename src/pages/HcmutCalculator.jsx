@@ -3,7 +3,10 @@ import { useHcmutCalculator } from '../hooks/useHcmutCalculator';
 import { CardSection } from '../components/common/CardSection';
 import { QuickScoreInput } from '../components/common/QuickScoreInput';
 import { SavedScoresBanner } from '../components/common/SavedScoresBanner';
-import { Settings, BookOpen, PenTool, Award, Info, Calculator, CheckCircle2, X, Building2, ExternalLink } from 'lucide-react';
+import { CalculatorHero } from '../components/common/CalculatorHero';
+import { ResultShell } from '../components/common/ResultShell';
+import { FloatingResultBar } from '../components/common/FloatingResultBar';
+import { Settings, BookOpen, PenTool, Award, Info, CheckCircle2, X, Building2 } from 'lucide-react';
 import { KHU_VUC, DOI_TUONG } from '../constants/common';
 import { DOI_TUONG_HCMUT, INTL_CERT_TYPES, HCMUT_CCQT_TABLE } from '../constants/hcmut';
 
@@ -66,23 +69,16 @@ export const HcmutCalculator = () => {
   const hasDgnlQuickTotal = state.dgnlQuickTotal !== '';
 
   return (
-    <div className="max-w-7xl mx-auto animate-in fade-in duration-500 pb-28">
-      <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-blue-900 tracking-tight flex items-center gap-3">
-          <Building2 className="w-8 h-8 text-blue-800" />
-          Máy tính điểm HCMUT 2026
-        </h1>
-        <p className="text-slate-500 mt-2">Phương thức tổng hợp của Trường Đại học Bách khoa - ĐHQG-HCM.</p>
-        <a
-          href="https://hcmut.edu.vn/tuyen-sinh/dai-hoc-chinh-quy/phuong-thuc-tuyen-sinh/xet-tuyen-tong-hop-2026"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-800 transition-colors hover:border-blue-200 hover:bg-blue-100"
-        >
-          Xem phương thức tuyển sinh HCMUT
-          <ExternalLink className="h-4 w-4" />
-        </a>
-      </div>
+    <div className="w-full animate-in fade-in duration-500 pb-28">
+      <div className="space-y-8">
+      <CalculatorHero
+        title="Máy tính điểm HCMUT 2026"
+        description="Phương thức tổng hợp của Trường Đại học Bách khoa - ĐHQG-HCM với bố cục rõ ràng cho thông tin dự tuyển, học bạ, THPT và chứng chỉ quốc tế."
+        icon={Building2}
+        tone="blue"
+        ctaLabel="Xem phương thức tuyển sinh HCMUT"
+        ctaHref="https://hcmut.edu.vn/tuyen-sinh/dai-hoc-chinh-quy/phuong-thuc-tuyen-sinh/xet-tuyen-tong-hop-2026"
+      />
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
@@ -445,34 +441,13 @@ export const HcmutCalculator = () => {
         </div>
 
         {/* Right Column - Result */}
-        <div className={`
-          lg:block lg:w-96 lg:static
-          ${showMobileResultModal ? 'fixed inset-0 z-[60] bg-slate-900/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in' : 'hidden'}
-        `}>
-          <div className={`
-            w-full bg-white shadow-2xl relative flex flex-col overflow-hidden
-            ${showMobileResultModal ? 'rounded-t-3xl sm:rounded-2xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-full sm:zoom-in-95' : 'rounded-2xl border border-blue-200 sticky top-24'}
-          `}>
-            
-            {showMobileResultModal && (
-              <button onClick={() => setShowMobileResultModal(false)} className="absolute top-4 right-4 z-20 text-white/70 hover:text-white lg:hidden bg-black/20 rounded-full p-1.5">
-                <X className="w-5 h-5" />
-              </button>
-            )}
-
-            {/* Header */}
-            <div className="p-6 bg-gradient-to-br from-blue-800 to-slate-900 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Calculator className="w-24 h-24" />
-              </div>
-              <h2 className="mb-1 text-lg font-medium text-blue-100">Điểm xét tuyển</h2>
-              <div className="text-5xl font-extrabold tracking-tight mb-2">
-                {results.total.toFixed(2)} <span className="text-xl font-normal text-blue-200">/ 100</span>
-              </div>
-            </div>
-
-            {/* Breakdown */}
-            <div className="p-6 space-y-6">
+        <ResultShell
+          tone="blue"
+          showMobile={showMobileResultModal}
+          onClose={() => setShowMobileResultModal(false)}
+          score={results.total.toFixed(2)}
+        >
+            <div className="space-y-6">
                <div>
                   <div className="mb-3 rounded-xl bg-blue-50 p-3 text-sm text-blue-900">
                     <div className="font-semibold">
@@ -532,24 +507,14 @@ export const HcmutCalculator = () => {
                   </div>
                </div>
             </div>
-          </div>
-        </div>
+        </ResultShell>
       </div>
 
-      {/* Floating Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 pb-safe shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] z-40 lg:hidden flex justify-between items-center animate-in slide-in-from-bottom-full">
-        <div>
-          <div className="text-xs text-slate-500 font-medium mb-0.5">Tổng điểm xét tuyển</div>
-          <div className="text-2xl font-extrabold text-blue-800 leading-none">
-            {results.total.toFixed(2)} <span className="text-sm font-normal text-slate-500">/ 100</span>
-          </div>
-        </div>
-        <button 
-          onClick={() => setShowMobileResultModal(true)}
-          className="px-6 py-3 bg-blue-800 hover:bg-blue-900 text-white rounded-xl font-semibold transition-colors shadow-md flex items-center gap-2"
-        >
-          Xem chi tiết
-        </button>
+      <FloatingResultBar
+        tone="blue"
+        value={`${results.total.toFixed(2)} / 100`}
+        onOpen={() => setShowMobileResultModal(true)}
+      />
       </div>
 
       {/* Modal Bảng Quy Đổi Ngoại Ngữ HCMUT */}
