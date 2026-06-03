@@ -84,9 +84,9 @@ export const convertHcmutEnglish = (type, score, toeicLr = 0, toeicSw = 0) => {
 
 export const convertIntlCert = (type, score) => {
   if (type === 'SAT') {
-    if (score < 1200) return 0;
-    const points = 100 - Math.floor((1600 - score) / 10);
-    return Math.min(100, Math.max(0, points));
+    const numericScore = Number(score);
+    const matchedRow = HCMUT_CCQT_TABLE.find((row) => row.sat === numericScore);
+    return matchedRow?.point || 0;
   }
 
   if (type === 'ACT') {
