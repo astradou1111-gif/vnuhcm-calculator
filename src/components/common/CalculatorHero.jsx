@@ -35,7 +35,6 @@ const toneClass = {
 export const CalculatorHero = ({
   title,
   description,
-  icon: Icon,
   tone = 'blue',
   ctaLabel,
   ctaHref,
