@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ExternalLink } from 'lucide-react';
+import { Calculator, ChevronLeft, ExternalLink } from 'lucide-react';
 
 const toneClass = {
   blue: {
@@ -35,11 +35,13 @@ const toneClass = {
 export const CalculatorHero = ({
   title,
   description,
+  icon: Icon,
   tone = 'blue',
   ctaLabel,
   ctaHref,
 }) => {
   const styles = toneClass[tone] || toneClass.blue;
+  const HeroIcon = Icon || Calculator;
 
   return (
     <section className={`relative overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br ${styles.panel} px-5 py-6 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.35)] backdrop-blur sm:px-8 sm:py-8`}>
@@ -62,7 +64,7 @@ export const CalculatorHero = ({
           <div className="max-w-3xl">
             <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
               <div className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${styles.icon}`}>
-                <Icon className="h-6 w-6" />
+                <HeroIcon className="h-6 w-6" />
               </div>
             </div>
             <h1 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-[2.6rem]">

@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { BackToTop } from './BackToTop';
+import { RouteErrorBoundary } from '../common/ErrorBoundary';
 
 export const Layout = () => {
   const { pathname } = useLocation();
@@ -30,7 +31,9 @@ export const Layout = () => {
         id="main-content"
         className="app-container flex w-full flex-1 py-6 sm:py-8"
       >
-        <Outlet />
+        <RouteErrorBoundary>
+          <Outlet />
+        </RouteErrorBoundary>
       </main>
       <Footer />
       <BackToTop />

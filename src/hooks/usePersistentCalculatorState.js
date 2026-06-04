@@ -1,36 +1,35 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { cloneStoredValues, sanitizeStoredValues } from '../utils/persistentState';
 
-const cloneValues = (values) => JSON.parse(JSON.stringify(values));
-
-const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
-
-const readStoredValues = (storageKey, initialValues) => {
+const readStoredState = (storageKey, initialValues) => {
   if (typeof window === 'undefined' || !window.localStorage) {
-    return cloneValues(initialValues);
+    return {
+      values: cloneStoredValues(initialValues),
+      recoveredFromStorageError: false,
+    };
   }
 
   try {
     const raw = window.localStorage.getItem(storageKey);
     if (!raw) {
-      return cloneValues(initialValues);
+      return {
+        values: cloneStoredValues(initialValues),
+        recoveredFromStorageError: false,
+      };
     }
 
     const parsed = JSON.parse(raw);
-    if (!isPlainObject(parsed)) {
-      return cloneValues(initialValues);
-    }
+    const sanitizedState = sanitizeStoredValues(initialValues, parsed);
 
-    const merged = cloneValues(initialValues);
-
-    Object.keys(initialValues).forEach((key) => {
-      if (Object.prototype.hasOwnProperty.call(parsed, key)) {
-        merged[key] = parsed[key];
-      }
-    });
-
-    return merged;
+    return {
+      values: sanitizedState.values,
+      recoveredFromStorageError: sanitizedState.recovered,
+    };
   } catch {
-    return cloneValues(initialValues);
+    return {
+      values: cloneStoredValues(initialValues),
+      recoveredFromStorageError: true,
+    };
   }
 };
 
@@ -38,12 +37,24 @@ const toSetterName = (key) => `set${key.charAt(0).toUpperCase()}${key.slice(1)}`
 
 export const usePersistentCalculatorState = (storageKey, initialValues) => {
   const initialSnapshot = useMemo(() => JSON.stringify(initialValues), [initialValues]);
-  const [values, setValues] = useState(() => readStoredValues(storageKey, initialValues));
+  const [initialState] = useState(() => readStoredState(storageKey, initialValues));
+  const [values, setValues] = useState(initialState.values);
+  const [recoveredFromStorageError, setRecoveredFromStorageError] = useState(
+    initialState.recoveredFromStorageError
+  );
 
   const hasSavedData = useMemo(
     () => JSON.stringify(values) !== initialSnapshot,
     [initialSnapshot, values]
   );
+
+  useEffect(() => {
+    if (recoveredFromStorageError) {
+      console.warn(
+        `[storage] Da phat hien du lieu luu khong hop le cho "${storageKey}" va tu dong khoi phuc ve trang thai an toan.`
+      );
+    }
+  }, [recoveredFromStorageError, storageKey]);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.localStorage) {
@@ -83,7 +94,8 @@ export const usePersistentCalculatorState = (storageKey, initialValues) => {
   );
 
   const clearSavedForm = useCallback(() => {
-    setValues(cloneValues(initialValues));
+    setValues(cloneStoredValues(initialValues));
+    setRecoveredFromStorageError(false);
 
     if (typeof window === 'undefined' || !window.localStorage) {
       return;
@@ -96,10 +108,16 @@ export const usePersistentCalculatorState = (storageKey, initialValues) => {
     }
   }, [initialValues, storageKey]);
 
+  const dismissStorageRecoveryNotice = useCallback(() => {
+    setRecoveredFromStorageError(false);
+  }, []);
+
   return {
     values,
     generatedSetters,
     hasSavedData,
     clearSavedForm,
+    recoveredFromStorageError,
+    dismissStorageRecoveryNotice,
   };
 };

@@ -104,10 +104,11 @@ Mỗi hook thường có pattern giống nhau:
 Vai trò:
 
 - Đọc dữ liệu từ `localStorage`.
-- Hợp nhất với `initialValues`.
+- Chuẩn hóa dữ liệu đã lưu theo đúng kiểu của `initialValues`.
 - Tự sinh setter theo tên field.
 - Tự lưu lại khi state đổi.
 - Xóa dữ liệu khi người dùng bấm reset.
+- Tự phục hồi an toàn khi dữ liệu cũ bị sai kiểu hoặc bị hỏng.
 
 Đây là hook nền tảng của gần như toàn bộ calculator.
 
@@ -191,8 +192,27 @@ Lưu ý quan trọng:
 
 - `vite.config.js` tự tính `base` từ tên repository khi chạy trong GitHub Actions.
 - `src/App.jsx` dùng `HashRouter`, nên không bị lỗi route con khi host trên Pages.
+- `public/404.html` đã được thêm để chuyển hướng các request đường dẫn con bị GitHub Pages trả về 404 sang dạng `/#/...`.
+- Có thêm mẫu rewrite SPA cho server truyền thống tại `deploy/nginx-spa.conf` và `deploy/apache-spa.htaccess`.
 
-## 11. Sự cố CI đã gặp và cách xử lý
+## 11. Sự cố blank page sau deploy và cách xử lý
+
+Nguyên nhân gốc đã xác định:
+
+- `src/components/common/CalculatorHero.jsx` dùng `Icon` nhưng trước đó không nhận prop `icon`, nên khi mở bất kỳ trang calculator nào, React sẽ ném lỗi runtime và làm trắng màn hình.
+- Dự án chưa có `ErrorBoundary`, nên chỉ cần một lỗi render là toàn bộ trang trắng.
+- Dữ liệu cũ trong `localStorage` có thể làm state của calculator sai kiểu và gây crash ở các phép `map`, `reduce`, `some`, truy cập phần tử mảng...
+- Với một số môi trường static hosting, truy cập trực tiếp đường dẫn con có thể trả về `404` nếu server không có rewrite/fallback cho SPA.
+
+Biện pháp đã áp dụng:
+
+- Sửa `CalculatorHero` để nhận đúng prop `icon` và có icon fallback an toàn.
+- Thêm `AppErrorBoundary` và `RouteErrorBoundary` để hiển thị thông báo lỗi thân thiện thay cho màn hình trắng.
+- Cứng hóa `usePersistentCalculatorState` bằng cơ chế sanitize dữ liệu lưu cục bộ trước khi dùng.
+- Thêm `public/404.html` cho GitHub Pages để chuyển hướng route con về hash route.
+- Bổ sung mẫu cấu hình rewrite cho Nginx/Apache trong thư mục `deploy/`.
+
+## 12. Sự cố CI đã gặp và cách xử lý
 
 Lỗi trước đây:
 
@@ -212,15 +232,16 @@ Cách xử lý đã chốt:
 - Giữ một hệ test duy nhất là `node --test`.
 - Giữ lại và bổ sung test Node thuần cho logic quan trọng để CI ổn định.
 
-## 12. Điểm cần cẩn trọng khi AI sửa code
+## 13. Điểm cần cẩn trọng khi AI sửa code
 
 - Đừng đổi `HashRouter` sang `BrowserRouter` nếu vẫn deploy trên GitHub Pages.
 - Đừng thêm dependency test mới nếu chưa cập nhật đồng bộ `package.json`, lockfile và workflow CI.
 - Khi sửa công thức tuyển sinh, luôn kiểm tra lại bảng quy đổi trong `src/constants/`.
 - Nếu thêm field vào state mà quên thêm vào `INITIAL_VALUES`, localStorage và setter tự sinh sẽ lệch.
 - Nếu thay đổi route slug, nhớ cập nhật cả `SCHOOLS` lẫn `src/App.jsx`.
+- Nếu thêm component dùng chung cho các calculator, hãy tránh phụ thuộc vào biến prop chưa destructure vì đây là loại lỗi runtime rất dễ gây blank page production.
 
-## 13. Gợi ý điểm vào code nhanh cho AI khác
+## 14. Gợi ý điểm vào code nhanh cho AI khác
 
 Tùy mục tiêu, hãy bắt đầu từ:
 
@@ -230,13 +251,14 @@ Tùy mục tiêu, hãy bắt đầu từ:
 - Muốn sửa dữ liệu trường ở trang chủ: `src/constants/common.js`
 - Muốn sửa công thức từng trường: `src/hooks/` + `src/constants/`
 - Muốn sửa deploy Pages: `.github/workflows/deploy.yml` và `vite.config.js`
+- Muốn sửa cơ chế chống blank page: `src/components/common/ErrorBoundary.jsx`, `src/hooks/usePersistentCalculatorState.js`, `public/404.html`
 
-## 14. Lưu ý nghiệp vụ
+## 15. Lưu ý nghiệp vụ
 
 - Kết quả chỉ mang tính tham khảo.
 - Quy chế tuyển sinh thực tế có thể thay đổi theo năm.
 - Mỗi khi cập nhật mùa tuyển sinh mới, nên rà lại toàn bộ bảng quy đổi, mô tả CTA và link nguồn chính thức của từng trường.
 
-## 15. License
+## 16. License
 
 Dự án dùng giấy phép `MIT`.

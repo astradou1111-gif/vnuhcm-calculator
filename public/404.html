@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dang chuyen huong...</title>
+    <script>
+      (function () {
+        var pathname = window.location.pathname;
+        var segments = pathname.split('/').filter(Boolean);
+        var lastSegment = segments[segments.length - 1];
+        var isGitHubPagesRepoRoute = segments.length > 1;
+        var repoBase = isGitHubPagesRepoRoute ? '/' + segments[0] : '';
+        var routePath = isGitHubPagesRepoRoute
+          ? '/' + segments.slice(1).join('/')
+          : pathname;
+
+        if (lastSegment === '404.html') {
+          routePath = '/';
+        }
+
+        var search = window.location.search || '';
+        var hash = window.location.hash ? window.location.hash.replace(/^#/, '') : '';
+        var nextHash = routePath + search + hash;
+        var targetUrl = window.location.origin + repoBase + '/#' + nextHash;
+
+        window.location.replace(targetUrl);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Dang chuyen huong ve ung dung...</p>
+  </body>
+</html>
