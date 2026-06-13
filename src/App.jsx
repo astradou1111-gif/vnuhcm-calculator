@@ -7,6 +7,7 @@ import { UsshCalculator } from './pages/UsshCalculator';
 import { UelCalculator } from './pages/UelCalculator';
 import { IuCalculator } from './pages/IuCalculator';
 import { UhsCalculator } from './pages/UhsCalculator';
+import { UitCalculator } from './pages/UitCalculator';
 
 const NotFound = () => (
   <div className="mx-auto flex min-h-[55vh] max-w-xl flex-col items-center justify-center py-16 text-center">
@@ -40,6 +41,7 @@ function App() {
           <Route path="uel" element={<UelCalculator />} />
           <Route path="iu" element={<IuCalculator />} />
           <Route path="uhs" element={<UhsCalculator />} />
+          <Route path="uit" element={<UitCalculator />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

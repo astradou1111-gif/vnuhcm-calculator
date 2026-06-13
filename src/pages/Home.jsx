@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { SCHOOLS } from '../constants/common';
-import { ChevronRight, ExternalLink } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 export const Home = () => {
   return (
@@ -71,7 +71,6 @@ export const Home = () => {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {SCHOOLS.map((school) => {
           const Icon = school.icon;
-          const isUit = school.id === 'uit';
           const cardClass = "group relative flex min-h-[17rem] flex-col justify-between rounded-[1.75rem] border border-white/80 bg-white/90 p-6 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.28)] transition-all duration-200 ease-out hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_28px_70px_-32px_rgba(37,99,235,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
           const content = (
             <>
@@ -80,11 +79,7 @@ export const Home = () => {
                   <Icon className="h-8 w-8" />
                 </div>
                 <div className="rounded-full border border-slate-200 bg-white p-2 text-slate-400 transition group-hover:text-slate-700">
-                  {isUit ? (
-                    <ExternalLink className="h-4 w-4" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4" />
-                  )}
+                  <ChevronRight className="h-4 w-4" />
                 </div>
               </div>
 
@@ -99,7 +94,7 @@ export const Home = () => {
 
               <div className="mt-6 flex items-center justify-between">
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${school.bg} ${school.color}`}>
-                  {isUit ? 'Thông tin tuyển sinh' : 'Mở máy tính'}
+                  Mở máy tính
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
                   2026
@@ -107,20 +102,6 @@ export const Home = () => {
               </div>
             </>
           );
-
-          if (isUit) {
-            return (
-              <a
-                key={school.id}
-                href="https://tuyensinh.uit.edu.vn/2026-thong-tin-tuyen-sinh-dai-hoc-chinh-quy-2026"
-                target="_blank"
-                rel="noreferrer"
-                className={cardClass}
-              >
-                {content}
-              </a>
-            );
-          }
 
           return (
             <Link

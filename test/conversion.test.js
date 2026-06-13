@@ -4,6 +4,7 @@ import { convertHcmutEnglish, convertIntlCert } from '../src/constants/hcmut.js'
 import { convertCCQT } from '../src/constants/uel.js';
 import { convertIuEnglishScore } from '../src/constants/iu.js';
 import { roundUhs } from '../src/constants/uhs.js';
+import { checkUitLanguageBonus, roundUit } from '../src/constants/uit.js';
 
 test('convertHcmutEnglish quy doi dung cac moc chinh', () => {
   assert.equal(convertHcmutEnglish('IELTS', 8.0), 10);
@@ -34,4 +35,22 @@ test('convertIuEnglishScore xu ly dung cac loai chung chi', () => {
 test('roundUhs lam tron mot chu so thap phan', () => {
   assert.equal(roundUhs(89.94), 89.9);
   assert.equal(roundUhs(89.95), 90);
+});
+
+test('checkUitLanguageBonus quy doi dung cho UIT 2026', () => {
+  assert.equal(checkUitLanguageBonus('IELTS', '5.0'), 5);
+  assert.equal(checkUitLanguageBonus('IELTS', '4.5'), 0);
+  assert.equal(checkUitLanguageBonus('TOEFL', '52'), 5);
+  assert.equal(checkUitLanguageBonus('TOEFL', '48'), 0);
+  assert.equal(checkUitLanguageBonus('TOEIC', '660', '260'), 5);
+  assert.equal(checkUitLanguageBonus('TOEIC', '640', '260'), 0);
+  assert.equal(checkUitLanguageBonus('TOEIC', '660', '240'), 0);
+  assert.equal(checkUitLanguageBonus('JLPT', 'N3'), 5);
+  assert.equal(checkUitLanguageBonus('JLPT', 'n2'), 5);
+  assert.equal(checkUitLanguageBonus('JLPT', 'N4'), 0);
+});
+
+test('roundUit lam tron hai chu so thap phan', () => {
+  assert.equal(roundUit(89.944), 89.94);
+  assert.equal(roundUit(89.945), 89.95);
 });
