@@ -144,7 +144,8 @@ export const usePersistentCalculatorState = (storageKey, initialValues) => {
           const sanitizedState = sanitizeStoredValues(initialValues, data.values);
           setValues(sanitizedState.values);
           resolve();
-        } catch (err) {
+        } catch (error) {
+          console.error('[Import Error]', error);
           reject(new Error('Tệp dữ liệu không hợp lệ hoặc bị lỗi.'));
         }
       };
