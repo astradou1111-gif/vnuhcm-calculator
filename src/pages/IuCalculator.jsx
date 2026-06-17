@@ -160,6 +160,8 @@ export const IuCalculator = () => {
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
+            onExport={state.exportData}
+            onImport={state.importData}
         onClear={state.clearSavedForm}
         tone="red"
       />
@@ -668,3 +670,4 @@ export const IuCalculator = () => {
     </div>
   );
 };
+

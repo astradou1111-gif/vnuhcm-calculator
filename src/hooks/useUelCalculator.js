@@ -23,7 +23,7 @@ const INITIAL_VALUES = {
 };
 
 export const useUelCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:uel', INITIAL_VALUES);
   const {
     program,
@@ -158,7 +158,11 @@ export const useUelCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results
   };
 };
+
+

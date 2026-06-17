@@ -74,6 +74,8 @@ export const HcmusCalculator = () => {
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
+            onExport={state.exportData}
+            onImport={state.importData}
         onClear={state.clearSavedForm}
         tone="blue"
       />
@@ -602,3 +604,4 @@ export const HcmusCalculator = () => {
     </div>
   );
 };
+

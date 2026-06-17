@@ -151,6 +151,8 @@ export const UhsCalculator = () => {
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
+            onExport={state.exportData}
+            onImport={state.importData}
         onClear={state.clearSavedForm}
         tone="blue"
       />
@@ -478,3 +480,4 @@ export const UhsCalculator = () => {
     </div>
   );
 };
+

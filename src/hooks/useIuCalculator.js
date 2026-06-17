@@ -32,7 +32,7 @@ const parseNumber = (value) => {
 const capScore = (value, max) => Math.min(Math.max(value, 0), max);
 
 export const useIuCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:iu', INITIAL_VALUES);
   const {
     k1,
@@ -193,7 +193,11 @@ export const useIuCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results,
   };
 };
+
+

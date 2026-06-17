@@ -14,7 +14,7 @@ const INITIAL_VALUES = {
 };
 
 export const useUsshCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:ussh', INITIAL_VALUES);
   const {
     thpt,
@@ -145,7 +145,11 @@ export const useUsshCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results
   };
 };
+
+

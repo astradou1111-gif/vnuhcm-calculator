@@ -21,7 +21,7 @@ const INITIAL_VALUES = {
 };
 
 export const useHcmusCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:hcmus', INITIAL_VALUES);
   const {
     w1,
@@ -188,7 +188,11 @@ export const useHcmusCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results: calculateResults
   };
 };
+
+

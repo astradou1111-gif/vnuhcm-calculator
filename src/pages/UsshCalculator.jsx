@@ -54,6 +54,8 @@ export const UsshCalculator = () => {
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
+            onExport={state.exportData}
+            onImport={state.importData}
         onClear={state.clearSavedForm}
         tone="emerald"
       />
@@ -330,3 +332,4 @@ export const UsshCalculator = () => {
     </div>
   );
 };
+

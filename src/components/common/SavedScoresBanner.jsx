@@ -1,4 +1,5 @@
-import { Database, RotateCcw } from 'lucide-react';
+import { useRef } from 'react';
+import { Database, RotateCcw, Download, Upload } from 'lucide-react';
 
 const toneClass = {
   blue: {
@@ -30,9 +31,31 @@ const toneClass = {
 export const SavedScoresBanner = ({
   hasSavedData,
   onClear,
+  onExport,
+  onImport,
   tone = 'blue',
 }) => {
   const styles = toneClass[tone] || toneClass.blue;
+  const fileInputRef = useRef(null);
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      if (onImport) {
+        await onImport(file);
+        alert('Nhập dữ liệu thành công!');
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+    // Reset input
+    e.target.value = '';
+  };
 
   return (
     <section
@@ -62,15 +85,51 @@ export const SavedScoresBanner = ({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onClear}
-          disabled={!hasSavedData}
-          className={`inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${styles.button}`}
-        >
-          <RotateCcw className="h-4 w-4" />
-          Xóa dữ liệu đã lưu
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {onExport && (
+            <button
+              type="button"
+              onClick={onExport}
+              disabled={!hasSavedData}
+              className={`inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${styles.button}`}
+              title="Xuất dữ liệu để nhập trên thiết bị khác"
+            >
+              <Download className="h-4 w-4" />
+              Xuất
+            </button>
+          )}
+
+          {onImport && (
+            <>
+              <button
+                type="button"
+                onClick={handleImportClick}
+                className={`inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${styles.button}`}
+                title="Nhập dữ liệu đã xuất từ thiết bị khác"
+              >
+                <Upload className="h-4 w-4" />
+                Nhập
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept=".json"
+                className="hidden"
+              />
+            </>
+          )}
+
+          <button
+            type="button"
+            onClick={onClear}
+            disabled={!hasSavedData}
+            className={`inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${styles.button}`}
+          >
+            <RotateCcw className="h-4 w-4" />
+            Xóa dữ liệu
+          </button>
+        </div>
       </div>
     </section>
   );

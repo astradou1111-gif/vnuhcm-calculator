@@ -30,7 +30,7 @@ const parseNumber = (value) => {
 };
 
 export const useUhsCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:uhs', INITIAL_VALUES);
   const {
     a,
@@ -164,7 +164,11 @@ export const useUhsCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results,
   };
 };
+
+

@@ -27,7 +27,7 @@ const parseNumber = (value) => {
 };
 
 export const useUitCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:uit', INITIAL_VALUES);
 
   const {
@@ -161,7 +161,11 @@ export const useUitCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results,
   };
 };
+
+

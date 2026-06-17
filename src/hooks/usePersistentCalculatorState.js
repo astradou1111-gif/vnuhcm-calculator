@@ -112,11 +112,54 @@ export const usePersistentCalculatorState = (storageKey, initialValues) => {
     setRecoveredFromStorageError(false);
   }, []);
 
+  const exportData = useCallback(() => {
+    const data = {
+      calculatorKey: storageKey,
+      timestamp: Date.now(),
+      values,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${storageKey.replace('vnuhcm-calculator:', '')}-data.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [storageKey, values]);
+
+  const importData = useCallback((file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.calculatorKey !== storageKey) {
+            const currentTab = storageKey.replace('vnuhcm-calculator:', '').toUpperCase();
+            const fileTab = data.calculatorKey ? data.calculatorKey.replace('vnuhcm-calculator:', '').toUpperCase() : 'Khác';
+            reject(new Error(`Tệp dữ liệu này thuộc về tab ${fileTab}, không phù hợp với tab hiện tại (${currentTab}). Vui lòng chuyển sang tab ${fileTab} để nhập điểm.`));
+            return;
+          }
+          const sanitizedState = sanitizeStoredValues(initialValues, data.values);
+          setValues(sanitizedState.values);
+          resolve();
+        } catch (err) {
+          reject(new Error('Tệp dữ liệu không hợp lệ hoặc bị lỗi.'));
+        }
+      };
+      reader.onerror = () => reject(new Error('Lỗi khi đọc tệp.'));
+      reader.readAsText(file);
+    });
+  }, [storageKey, initialValues]);
+
   return {
     values,
     generatedSetters,
     hasSavedData,
     clearSavedForm,
+    exportData,
+    importData,
     recoveredFromStorageError,
     dismissStorageRecoveryNotice,
   };

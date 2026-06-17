@@ -87,6 +87,8 @@ export const UelCalculator = () => {
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
+            onExport={state.exportData}
+            onImport={state.importData}
         onClear={state.clearSavedForm}
         tone="indigo"
       />
@@ -666,3 +668,4 @@ export const UelCalculator = () => {
     </>
   );
 };
+

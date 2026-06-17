@@ -82,6 +82,8 @@ export const HcmutCalculator = () => {
 
       <SavedScoresBanner
         hasSavedData={state.hasSavedData}
+            onExport={state.exportData}
+            onImport={state.importData}
         onClear={state.clearSavedForm}
         tone="blue"
       />
@@ -662,3 +664,4 @@ const Building2Icon = (props) => (
     <path d="M10 18h4" />
   </svg>
 );
+

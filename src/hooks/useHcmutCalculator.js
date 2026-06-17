@@ -32,7 +32,7 @@ const INITIAL_VALUES = {
 };
 
 export const useHcmutCalculator = () => {
-  const { values, generatedSetters, hasSavedData, clearSavedForm } =
+  const { values, generatedSetters, hasSavedData, clearSavedForm, exportData, importData } =
     usePersistentCalculatorState('vnuhcm-calculator:hcmut', INITIAL_VALUES);
   const {
     wNL,
@@ -164,7 +164,11 @@ export const useHcmutCalculator = () => {
       ...generatedSetters,
       hasSavedData,
       clearSavedForm,
+      exportData,
+      importData,
     },
     results
   };
 };
+
+
