@@ -12,18 +12,18 @@ const ThreadsIcon = (props) => (
 
 export const Footer = () => {
   return (
-    <footer className="mt-auto border-t border-white/60 bg-white/70 backdrop-blur-xl">
+    <footer className="mt-auto border-t border-[#0d3b66]/10 bg-[#0b2744] text-white">
       <div className="app-container py-10">
-        <div className="surface-card px-6 py-6 sm:px-8">
+        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#0d3b66] via-[#123f6c] to-[#0b2744] px-6 py-6 shadow-[0_24px_80px_-36px_rgba(2,12,27,0.8)] sm:px-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                VNUHCM Calculator
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200">
+                HCMUT Inspired Theme
               </p>
-              <p className="mt-2 text-lg font-black text-slate-950">
-                Web Tính Điểm ĐHQG-HCM 2026
+              <p className="mt-2 text-lg font-black text-white">
+                Web Tính Điểm ĐHQG-HCM với giao diện cảm hứng Bách khoa
               </p>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
+              <p className="mt-2 text-sm leading-7 text-slate-200">
                 Công cụ tham khảo giúp so sánh nhanh nhiều phương thức tuyển sinh.
                 Kết quả không thay thế thông báo chính thức từ các trường thành viên.
               </p>
@@ -34,7 +34,7 @@ export const Footer = () => {
                 href="https://github.com/trhming/vnuhcm-calculator"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 transition hover:border-slate-300 hover:text-sky-700"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 font-semibold text-white transition hover:bg-white/15 hover:text-amber-200"
               >
                 <GithubIcon className="h-4 w-4" />
                 GitHub
@@ -43,7 +43,7 @@ export const Footer = () => {
                 href="https://www.threads.com/@trhming_"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 font-semibold text-slate-700 transition hover:border-slate-300 hover:text-sky-700"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 font-semibold text-white transition hover:bg-white/15 hover:text-amber-200"
               >
                 <ThreadsIcon className="h-4 w-4" />
                 Threads

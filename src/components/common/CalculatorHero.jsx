@@ -3,11 +3,11 @@ import { Calculator, ChevronLeft, ExternalLink } from 'lucide-react';
 
 const toneClass = {
   blue: {
-    badge: 'border-blue-200/80 bg-blue-50 text-blue-800',
-    icon: 'bg-blue-600/10 text-blue-700 ring-1 ring-blue-200/70',
-    panel: 'from-blue-600/12 via-white to-sky-500/10',
-    button: 'border-blue-200 bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'text-blue-700',
+    badge: 'border-[#0d3b66]/10 bg-[#0d3b66]/5 text-[#0d3b66]',
+    icon: 'bg-[#0d3b66]/10 text-[#0d3b66] ring-1 ring-[#0d3b66]/10',
+    panel: 'from-[#0d3b66]/12 via-white to-[#f7b500]/10',
+    button: 'border-[#0d3b66] bg-[#0d3b66] text-white hover:bg-[#0b2744]',
+    secondary: 'text-[#0d3b66]',
   },
   indigo: {
     badge: 'border-indigo-200/80 bg-indigo-50 text-indigo-800',
@@ -44,19 +44,22 @@ export const CalculatorHero = ({
   const HeroIcon = Icon || Calculator;
 
   return (
-    <section className={`relative overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br ${styles.panel} px-5 py-6 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.35)] backdrop-blur sm:px-8 sm:py-8`}>
+    <section className={`relative overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br ${styles.panel} px-5 py-6 shadow-[0_24px_80px_-36px_rgba(13,59,102,0.25)] backdrop-blur sm:px-8 sm:py-8`}>
+      <div className="absolute inset-0 opacity-60">
+        <div className="h-full w-full bg-[linear-gradient(rgba(13,59,102,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(13,59,102,0.04)_1px,transparent_1px)] bg-[size:24px_24px]" />
+      </div>
       <div className="absolute inset-y-0 right-0 hidden w-40 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.9),_transparent_68%)] lg:block" />
       <div className="relative flex flex-col gap-5">
         <div className="flex flex-wrap items-center gap-3">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white"
+            className="inline-flex items-center gap-2 rounded-full border border-[#0d3b66]/10 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-[#0d3b66]/20 hover:bg-white"
           >
             <ChevronLeft className="h-4 w-4" />
             Trang chủ
           </Link>
           <span className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] ${styles.badge}`}>
-            Bo cong cu tinh diem
+            Chu de HCMUT
           </span>
         </div>
 
